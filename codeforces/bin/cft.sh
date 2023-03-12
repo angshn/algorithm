@@ -113,7 +113,7 @@ if [  -n "$cppfile" ];then
     print "开始编译"
     compile $cppfile
     if [ $? -eq 0 ];then
-        print suc "编译成功,开始运行.\n"
+        print suc "> 编译成功,开始运行.\n"
         run "/Users/syang/career/algorithm/codeforces/in.in" $outPath
         print "运行结束"
     else
