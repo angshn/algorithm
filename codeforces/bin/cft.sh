@@ -62,7 +62,7 @@ function run() {
 }
 
 
-set -- $(getopt -q f:b: --long clean:, -- "$@")
+set -- $(getopt -q f:b: --long clean, -- "$@")
 while [ -n "$1" ]
 do
     case "$1" in
@@ -77,7 +77,7 @@ do
         cppfile=$2
         shift
         ;;
-    -clean) dstdirectory=$2;
+    -clean) clean="clean";
         shift
         ;;
     --);;
@@ -87,19 +87,19 @@ do
     shift
 done
 
-if [ -n "$dstdirectory" ];then
-    print info "clean direcotry"
-    kase=".*\.dSYM .*\.out"
-    cd $dstdirectory
+if [ -n "$clean" ];then
+    print info "Clean the root direcotry"
+    kase="*.dSYM *.out"
     for _cake in $kase
     do
-        _fs=$(ls | grep "$_cake")
-        if [ -n "$_fs" ];then
-            print info "rm -rf $_fs"
-            rm -rf $_fs
+        $(find /Users/syang/career/algorithm -name $_cake)
+        if [ -z $? ];then
+            print info "$(find /Users/syang/career/algorithm -name $_cake)"
+            find /Users/syang/career/algorithm -name $_cake | xargs rm -rf
+        else
+            print info "No matches $_cake found. "
         fi
     done
-    cd -
 fi
 
 
