@@ -89,16 +89,20 @@ done
 
 if [ -n "$clean" ];then
     print info "Clean the root direcotry"
-    kase="*.dSYM *.out"
-    for _cake in $kase
+    kase=("*.dSYM" "*.out")
+    for _cake in ${kase[*]}
     do
-        $(find /Users/syang/career/algorithm -name $_cake)
-        if [ -z $? ];then
-            print info "$(find /Users/syang/career/algorithm -name $_cake)"
-            find /Users/syang/career/algorithm -name $_cake | xargs rm -rf
-        else
-            print info "No matches $_cake found. "
+
+        num=$(find /Users/syang/career/algorithm -name $_cake | wc -l)
+        num=$(echo $num | xargs)
+        if [ $num -ne 0 ];then
+            print info "Searching for $_cake"
+            print info $(find /Users/syang/career/algorithm -name $_cake)
+            find /Users/syang/career/algorithm -name "$_cake" | xargs rm -rf
         fi
+        # else
+            # print info "No matches $_cake found. "
+        # fi
     done
 fi
 
