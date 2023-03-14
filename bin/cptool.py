@@ -6,17 +6,16 @@ from enum import Enum
 import sys
 import shutil
 from yaml import load, dump,CLoader as Loader
-PROJECT_ROOT = "/root/devel/algorithm"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 CPP_TEMPLATE = PROJECT_ROOT+os.path.sep+"/templates/template.txt"
 
 
 class InfoType(Enum):
-    ERROR = 0
-    SUCCESS = 1
-    WARNING = 2
-    INFO = 3
-    OTHER = 4
-
+    ERROR   =   0
+    SUCCESS =   1
+    WARNING =   2
+    INFO    =   3
+    OTHER   =   4
 
 def read(path):
     
@@ -33,6 +32,7 @@ def printk(typ, *info):
     """
     _heads = ['\033[1;31m','\033[0;1;32m','\033[1;33m','\033[1;34m','\033[1;35m','\033[0m']
     print(f'{_heads[typ.value]}',*info,f'{_heads[-1]}')
+
 def clean():
     """Cleaning the directory
     """
@@ -48,7 +48,20 @@ def clean():
         # print(os.path.realpath(fi))
         os.remove(fi)
     
-    
+def getTemplate():
+
+    with open(CPP_TEMPLATE,"r") as ff:
+        templ = ff.read()
+        # ! do replace
+        options=conf["config"]["options"]
+        keys = options.keys()
+        for i in keys:
+            templ = templ.replace(i,options[i])
+    return templ
+
+def copyTemplate(dest, templ):
+    with open(dest,"w") as f:
+        f.write(templ)
 
 
 def startContest(contestId, size, path):
@@ -67,21 +80,27 @@ def startContest(contestId, size, path):
     files = os.listdir(targetpath)
     if len(files) != 0:
         printk(InfoType.WARNING,"Exsit some file")
-    with open(CPP_TEMPLATE,"r") as ff:
-        templ = ff.read()
-        # ! do replace
-        options=conf["config"]["options"]
-        keys = options.keys()
-        for i in keys:
-            templ = templ.replace(i,options[i])
+    templ = getTemplate()
     for i in range(size):
         name = chr(ord('A')+i)+'.cpp'
         if name not in files:
             filename = targetpath +os.path.sep + name
-            with open(filename,"w") as f:
-                f.write(templ)
+            copyTemplate(filename, templ)
         else:
             printk(InfoType.WARNING, name ," is exist")
+
+def makesure(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+
+def startSingle(problemSeq):
+    path = args.path+os.path.sep+args.platform+os.path.sep+"pending"
+    makesure(path)
+    targetpath = path+os.path.sep+problemSeq+".cpp"
+    templ = getTemplate()
+    copyTemplate(targetpath, templ)
+    printk(InfoType.INFO, f"make file in {targetpath}.")
 
 def getArgs():
     parser = argparse.ArgumentParser(description="Competitive Programming Tools",usage="It is a effective tool for doing competitive programming")
@@ -90,20 +109,23 @@ def getArgs():
     parser.add_argument('--path',type=str,dest="path",help="Giving a target directory to save the contest/problems.", default=os.path.realpath(os.path.dirname(os.path.dirname(__file__))))
     parser.add_argument('--clean',dest="clean",action='store_true',help="Clean the project, default to remove the .out and other files and directories.")
     parser.add_argument('--allkill',type=str,help="Accept a contest id, generally, this operation will move the target contest directory to $PROJECT_ROOT/done, except that, it will clean the target dir.")
+    parser.add_argument('--accept',type=str, help="Accept single problem, move it to done directory")
+    # TODO Accept single problem.
     parser.add_argument('--platform', type=str, dest="platform",help="The platform you want to play, such as codeforces, luogu etc", default="codeforces")
-    
+    parser.add_argument('--single',type=str,dest="singleProblem",help="create a single file")
     args = parser.parse_args()
     return args
 
 if __name__ == "__main__":
-    
-
     args = getArgs()
     conf = load(read("config.yaml"),Loader=Loader)
+
+    if args.singleProblem:
+        startSingle(args.singleProblem)
+
     if args.clean:
         clean()
         
     if args.contestId and args.sizeProblems:
         startContest(args.contestId,args.sizeProblems, args.path+os.path.sep+args.platform)
     
-    # printk(InfoType.ERROR,"hello"," world", "codeforces")
