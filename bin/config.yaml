@@ -1,0 +1,4 @@
+config:
+  options:
+    $1: "#ifndef ONLINE_JUDGE\n    freopen(\"/root/devel/algorithm/in.in\",\"r\",stdin); \n#endif"
+    
