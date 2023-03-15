@@ -5,3 +5,4 @@ workspace.code-workspace
 **/in.in
 **/__pycache__
 .idea
+dog.py
