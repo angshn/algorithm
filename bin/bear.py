@@ -102,15 +102,34 @@ def startSingle(problemSeq):
     copyTemplate(targetpath, templ)
     printk(InfoType.INFO, f"make file in {targetpath}.")
 
+def accecp(problem, dir=None):
+    """Moving the problem file to done directory.
+
+    Args:
+        problem (str): A file name you want to accept
+    """
+    target = os.path.join(PROJECT_ROOT, args.platform, "done")
+    path = os.path.join(PROJECT_ROOT,args.platform,"pending")
+    if dir is not None:
+        path = os.path.join(path,dir)
+        makesure(os.path.join(target,dir))
+        target = os.path.join(target,dir)
+    
+    path = os.path.join(path,problem+".cpp")
+    if os.path.exists(path):
+        shutil.move(path, os.path.join(target,problem+".cpp"))
+    
+
+
+
 def getArgs():
     parser = argparse.ArgumentParser(description="Competitive Programming Tools",usage="It is a effective tool for doing competitive programming")
     parser.add_argument('--contest',type=str,dest="contestId",help="the contest id you wang to add. sucn as contest id 1800",metavar= ["1702"])
-    parser.add_argument('--size',type=int,dest="sizeProblems",help="the number of problems that given contest contains",metavar=["6","8"],default=6)
+    parser.add_argument('--contest-size',type=int,dest="contestSize",help="the number of problems that given contest contains",metavar=["6","8"],default=6)
     parser.add_argument('--path',type=str,dest="path",help="Giving a target directory to save the contest/problems.", default=os.path.realpath(os.path.dirname(os.path.dirname(__file__))))
     parser.add_argument('--clean',dest="clean",action='store_true',help="Clean the project, default to remove the .out and other files and directories.")
     parser.add_argument('--allkill',type=str,help="Accept a contest id, generally, this operation will move the target contest directory to $PROJECT_ROOT/done, except that, it will clean the target dir.")
     parser.add_argument('--accept',type=str, help="Accept single problem, move it to done directory")
-    # TODO Accept single problem.
     parser.add_argument('--platform', type=str, dest="platform",help="The platform you want to play, such as codeforces, luogu etc", default="codeforces")
     parser.add_argument('--single',type=str,dest="singleProblem",help="create a single file")
     args = parser.parse_args()
@@ -126,6 +145,7 @@ if __name__ == "__main__":
     if args.clean:
         clean()
         
-    if args.contestId and args.sizeProblems:
-        startContest(args.contestId,args.sizeProblems, args.path+os.path.sep+args.platform)
+    if args.contestId and args.contestSize:
+        startContest(args.contestId,args.contestSize, args.path+os.path.sep+args.platform)
+    
     
