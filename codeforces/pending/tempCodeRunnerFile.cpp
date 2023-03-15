@@ -4,18 +4,16 @@
 #define rep(i, begin, end) for (__typeof(end) i = (begin) - ((begin) > (end)); i != (end) - ((begin) > (end)); i += 1 - 2 * ((begin) > (end)))
 using namespace std;
 const int N = 1e5 + 5;
-const ll INF = INT64_MAX;
+const int INF = 0x3f3f3f3f;
 const int M = 2e5 + 5;
 int ver[M],head[N],edge[M],Next[M];
 int tot;
-ll d[N];
-int vis[N];
+int d[N],vis[N];
 int path[N];
 priority_queue<pair<int,int>> q;
 
 void dijkstra(int st){
-    // memset(d,0x3f,sizeof(d));
-    fill(d,d+N,INF);
+    memset(d,0x3f,sizeof(d));
     memset(vis,0,sizeof(vis));
     d[st] = 0;
     q.emplace(make_pair(0,st));

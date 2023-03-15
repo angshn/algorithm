@@ -48,6 +48,15 @@ def clean():
         # print(os.path.realpath(fi))
         os.remove(fi)
     
+def init(platforms):
+    _dirs = ["contest","done","pending"]
+    for platform in platforms:
+        path = PROJECT_ROOT+os.path.sep+platform
+        for dir in _dirs:
+            makesure(os.path.join(path,dir))
+
+
+
 def getTemplate():
 
     with open(CPP_TEMPLATE,"r") as ff:
@@ -113,6 +122,7 @@ def getArgs():
     # TODO Accept single problem.
     parser.add_argument('--platform', type=str, dest="platform",help="The platform you want to play, such as codeforces, luogu etc", default="codeforces")
     parser.add_argument('--single',type=str,dest="singleProblem",help="create a single file")
+    parser.add_argument('--init',type=str,dest="platforms",nargs="*",help="Initialize the repo and create direcotry by given platforms.")
     args = parser.parse_args()
     return args
 
@@ -128,4 +138,8 @@ if __name__ == "__main__":
         
     if args.contestId and args.sizeProblems:
         startContest(args.contestId,args.sizeProblems, args.path+os.path.sep+args.platform)
+
+    if args.platforms is not None and len(args.platforms) > 0:
+        init(args.platforms)
+
     
