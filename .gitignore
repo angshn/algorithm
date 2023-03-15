@@ -4,4 +4,4 @@ workspace.code-workspace
 **/.DS_Store
 **/in.in
 **/__pycache__
-dog.py
+.idea
