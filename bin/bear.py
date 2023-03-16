@@ -74,7 +74,7 @@ def startContest(contestId, size, path):
     if not os.path.exists(path):
         os.makedirs(path)
     
-    targetpath = path+os.path.sep+"pending"+os.path.sep+contestId
+    targetpath = path+os.path.sep+"doing"+os.path.sep+contestId
     if not os.path.exists(targetpath):
         os.makedirs(targetpath)
     files = os.listdir(targetpath)
@@ -95,7 +95,7 @@ def makesure(path):
 
 
 def startSingle(problemSeq):
-    path = args.path+os.path.sep+args.platform+os.path.sep+"pending"
+    path = args.path+os.path.sep+args.platform+os.path.sep+"doing"
     makesure(path)
     targetpath = path+os.path.sep+problemSeq+".cpp"
     templ = getTemplate()
@@ -109,7 +109,7 @@ def accecp(problem, dir=None):
         problem (str): A file name you want to accept
     """
     target = os.path.join(PROJECT_ROOT, args.platform, "done")
-    path = os.path.join(PROJECT_ROOT,args.platform,"pending")
+    path = os.path.join(PROJECT_ROOT,args.platform,"doing")
     if dir is not None:
         path = os.path.join(path,dir)
         makesure(os.path.join(target,dir))
@@ -129,7 +129,7 @@ def getArgs():
     parser.add_argument('--path',type=str,dest="path",help="Giving a target directory to save the contest/problems.", default=os.path.realpath(os.path.dirname(os.path.dirname(__file__))))
     parser.add_argument('--clean',dest="clean",action='store_true',help="Clean the project, default to remove the .out and other files and directories.")
     parser.add_argument('--allkill',type=str,help="Accept a contest id, generally, this operation will move the target contest directory to $PROJECT_ROOT/done, except that, it will clean the target dir.")
-    parser.add_argument('--accept',type=str, help="Accept single problem, move it to done directory")
+    parser.add_argument('--accept',type=str,dest="fid", help="Accept single problem, move it to done directory")
     parser.add_argument('--platform', type=str, dest="platform",help="The platform you want to play, such as codeforces, luogu etc", default="codeforces")
     parser.add_argument('--single',type=str,dest="singleProblem",help="create a single file")
     args = parser.parse_args()
@@ -147,5 +147,8 @@ if __name__ == "__main__":
         
     if args.contestId and args.contestSize:
         startContest(args.contestId,args.contestSize, args.path+os.path.sep+args.platform)
+
+    if args.fid:
+        accecp(args.fid)
     
     
