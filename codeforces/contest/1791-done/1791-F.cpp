@@ -12,7 +12,7 @@
 #define ll long long int
 using namespace std;
 const int N = 2e5 + 5;
-int buf[N];
+int pre[N];
 static inline int sum_digits(int x)
 {
     int res = 0;
@@ -44,8 +44,8 @@ int main()
         set<int> s;
         for (int i = 1; i <= n; i++)
         {
-            cin >> buf[i];
-            if(buf[i]>9) s.insert(i);
+            cin >> pre[i];
+            if(pre[i]>9) s.insert(i);
         }
         for (int i = 0; i < q; i++)
         {
@@ -60,10 +60,10 @@ int main()
                 {
                     auto it = s.lower_bound(pos);
                     if(it == s.end() || *it > r) break;
-                    buf[*it] = sum_digits(buf[*it]);
+                    pre[*it] = sum_digits(pre[*it]);
                     int idx = *it;
                     s.erase(it);
-                    if(buf[idx]>9) s.insert(idx);
+                    if(pre[idx]>9) s.insert(idx);
                     pos = idx+1;
                 }
                 
@@ -72,7 +72,7 @@ int main()
             {
                 cin >> l;
                 // quering tree
-                cout<<buf[l]<<"\n";
+                cout<<pre[l]<<"\n";
             }
         }
     }

@@ -1,6 +1,6 @@
 **/.vscode
 **/*dSYM
-workspace.code-workspace
+algorithm.code-workspace
 **/.DS_Store
 **/in.in
 **/__pycache__

@@ -14,7 +14,6 @@ void solve(){
 }
 int main()
 {
-$1
     FASTIO
     int t;cin>>t;
     while(t--) solve();
