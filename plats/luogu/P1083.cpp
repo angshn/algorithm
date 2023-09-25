@@ -14,7 +14,7 @@ ll D[N];
 int n,m;
 struct Node{
     ll d,s,t;
-}nodes[N];
+}nodes[N];  
 bool check(int mid){
     for(int i=1;i<=n;i++){
         D[i]=a[i]-a[i-1];
