@@ -35,8 +35,6 @@ void solve(){
     while(!q2.empty()){
         auto tp = q2.top();
         auto tc = q3.top();
-
-
         if(vis[tp.second]){
             q2.pop();
             continue;
