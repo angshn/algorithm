@@ -1,57 +1,67 @@
-#include<iostream>
-#include<algorithm>
-#include<cstdio>
-#include<cmath>
+#include <bits/stdc++.h>
 using namespace std;
-const int maxn = 1e5+50;
-const int inf = 0x3f3f3f3f;
-int n,k,x,t,i,j,sum,ans,sub;
-int l,r;
-struct Node{
-    int id;
-    int sum;
-};
-
-bool cmp(Node x,Node y){
-    return x.sum<y.sum;
-}
-
+int t;
+#define ll long long
+int cnt[4];
 int main(){
-#ifndef ONLINE_JUDGE
-  freopen("/Users/syang/career/algo/in.in","r",stdin);
-#endif
-    while(scanf("%d%d",&n,&k)&&(k!=0||n!=0)){
-        Node a[maxn];
-        a[0].sum=0;a[0].id=0;
-        for(int m=1;m<=n;m++){
-            scanf("%d",&x);
-            a[m].sum=a[m-1].sum+x;
-            a[m].id=m;
-        }
-        sort(a,a+n+1,cmp);
-        while(k--){
-            scanf("%d",&t);
-            i=0;
-            j=1;
-            sum=ans=0;
-            sub=inf;
-            l=r=0;
-            while(j<=n){
-                sum=a[j].sum-a[i].sum;//因为总是大减小，所以sum总是正的
-                if(abs(sum-t)<sub){
-                    l=min(a[i].id,a[j].id);
-                    r=max(a[i].id,a[j].id);
-                    sub=abs(sum-t);
-                    ans=sum;
-                }
-                if(sum<t)j++;//如果和比t小了，就j右移
-                else if(sum>t)i++;//反之左移
-                else break;//sum==t就不需要往下找了
-                if(i==j)j++;//如果i右移到和j相等
+	#ifndef ONLINE_JUDGE
+	  freopen("/Users/syang/career/algorithm/in.txt","r",stdin);
+	#endif
+    cin>>t;
+    while(t--){
+        string passw;cin>>passw;
+        ll ans = 0;
+        memset(cnt,0,sizeof(cnt));
+        for(int i=0;i<passw.length();i++){
+            if(isdigit(passw[i])){
+                cnt[0]++;
             }
-            l++;//因为l取的是左端点的前一个点的id，所以要往右移一下
-            printf("%d %d %d\n",ans,l,r);
+            if(passw[i]<='z'&&passw[i]>='a'){
+                cnt[1]++;
+            }
+            if(passw[i]<='Z'&&passw[i]>='A'){
+                cnt[2]++;
+            }
+            if(passw[i]==','||passw[i]=='.'||passw[i]=='?'||passw[i]=='!'){
+                cnt[3]++;
+            }
         }
+        for(int i=0;i<passw.length();i++){
+            //数字多于1个时当前的数字位可以转换成其他任意字符315
+            char cur = passw[i];
+            if(isdigit(cur)){
+                if(cnt[0]>1){
+                    ans+=65;
+                }
+                else {
+                    ans+=9;//只能换成其他数字了
+                }
+            }
+            if(passw[i]<='z'&&passw[i]>='a'){
+                if(cnt[1]>1){
+                    ans+=65;
+                }
+                else {
+                    ans+=25;
+                }
+            }
+            if(passw[i]<='Z'&&passw[i]>='A'){
+                if(cnt[2]>1){
+                    ans+=65;
+                }
+                else {
+                    ans+=25;
+                }
+            }
+            if(passw[i]==','||passw[i]=='.'||passw[i]=='?'||passw[i]=='!'){
+                if(cnt[3]>1){
+                    ans+=65;
+                }
+                else {
+                    ans+=3;
+                }
+            }
+        }
+        cout<<ans<<endl;
     }
 }
-
