@@ -11,3 +11,4 @@ in.txt
 algorithm.code-workspace
 
 plats/luogu/tmp.cpp
+*.exe
