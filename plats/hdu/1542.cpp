@@ -18,13 +18,15 @@ struct ScanLine{
     double right_x, left_x;
     int inout;
     ScanLine(){};
-    ScanLine(double y, double x2, double x1, int io) : y(y), right_x(x2), left_x(x1), inout(io) {}
+    ScanLine(double y, double x2, double x1, int io) :
+         y(y), right_x(x2), left_x(x1), inout(io) {}
 
 }line[N];
+
 void pushup(int p,int pl, int pr){
     if (tag[p]) length[p] = xx[pr] - xx[pl];//这个线段对计算宽度有效，计入宽度
     else if (pl + 1 == pr) length[p] = 0;   //叶节点不行，左闭右开
-    else length[p] = length[ls(p)] + length[rs(p)]; //
+    else length[p] = length[ls(p)] + length[rs(p)]; //tag不为0的总宽度
 }
 
 void update(int L,int R,int io,int p,int pl,int pr){
