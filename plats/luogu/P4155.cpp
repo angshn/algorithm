@@ -7,7 +7,7 @@
     cin.tie(0);               \
     cout.tie(0);
 using namespace std;
-const int N = 4e5 + 5;
+const int N = 5e5 + 5;
 const int INF = 0x3f3f3f3f;
 
 struct Node{
