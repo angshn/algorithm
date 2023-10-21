@@ -35,9 +35,10 @@ int st_query(int l,int r){
 }
 
 void solve(){
-    n=read(),m=read();
+    n=read();
     for(int i=1;i<=n;i++) a[i]=read();
     init();
+    m=read();
     for(int i=1;i<=m;i++){
         int l=read(),r=read();
         printf("%d\n",st_query(l,r));
@@ -56,6 +57,6 @@ int main()
     freopen("/Users/syang/career/algorithm/in.txt","r",stdin);
 #endif
     FASTIO
-    solve();
+     int t;cin>>t;while(t--)  solve();
     return 0;
 }
